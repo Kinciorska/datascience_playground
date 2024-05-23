@@ -25,5 +25,10 @@ Run the Docker container in the background using
    docker-compose up -d
    ````
 
+#### Datasets used in the examples
+
+- [Linear regression](https://www.kaggle.com/datasets/andonians/random-linear-regression)
+
+
 #### License
 This app is open-source and distributed under the MIT License.
