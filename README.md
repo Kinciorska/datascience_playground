@@ -33,7 +33,7 @@ Run the Docker container in the background using
 - [Linear regression](https://www.kaggle.com/datasets/andonians/random-linear-regression)
 - [Logistic regression](https://www.kaggle.com/code/jchen2186/machine-learning-with-iris-dataset/notebook)
 - [SVM](https://www.kaggle.com/code/jchen2186/machine-learning-with-iris-dataset/notebook)
-
+- [Feature scaling](https://drive.google.com/file/d/1J7dPhnj2yBuzPwYraFU6cpCsa8Va3fiM/view)
 
 
 ## License
