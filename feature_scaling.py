@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from sklearn.preprocessing import MinMaxScaler, Normalizer
+from sklearn.preprocessing import MinMaxScaler, Normalizer, StandardScaler
 
 
 df = pd.read_csv('/Users/kinga/Documents/DataScience/feature_scaling/SampleFile.csv')
@@ -25,6 +25,14 @@ scaled_df = pd.DataFrame(scaled_data,
 # normalization
 
 scaler = Normalizer()
+scaled_data = scaler.fit_transform(df)
+scaled_df = pd.DataFrame(scaled_data,
+                         columns=df.columns)
+
+
+# standarization
+
+scaler = StandardScaler()
 scaled_data = scaler.fit_transform(df)
 scaled_df = pd.DataFrame(scaled_data,
                          columns=df.columns)
