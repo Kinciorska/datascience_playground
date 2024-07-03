@@ -1,10 +1,11 @@
 import pandas as pd
 import numpy as np
+from imblearn.under_sampling import NearMiss
+from imblearn.over_sampling import SMOTE
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split
-from imblearn.over_sampling import SMOTE
 
 
 df = pd.read_csv('/Users/kinga/Documents/DataScience/inbalanced_data_handling/creditcard.csv')
@@ -52,3 +53,14 @@ predictions_after_smote = lr1.predict(X_test)
 
 # print classification report
 print(classification_report(y_test, predictions_after_smote))
+
+# Near miss balances class distribution by randomly eliminating majority class examples
+
+nm = NearMiss()
+X_train_nm, y_train_nm = nm.fit_resample(X_train, y_train.ravel())
+
+lr2 = LogisticRegression()
+lr2.fit(X_train_nm, y_train_nm.ravel())
+predictions_after_near_miss = lr2.predict(X_test)
+
+print(classification_report(y_test, predictions_after_near_miss))
