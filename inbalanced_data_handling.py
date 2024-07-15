@@ -7,7 +7,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import make_classification
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.metrics import (accuracy_score, confusion_matrix, classification_report,  precision_score, recall_score,
+                             f1_score, roc_auc_score)
 from sklearn.model_selection import train_test_split
 
 
@@ -43,7 +44,7 @@ print(classification_report(y_test, predictions))
 
 # the recall of the minority class is noticeably lower
 # we proved that the model is more biased towards the majority class
-# we need to apply imbalance handling techniques like SMOTE or Near miss
+# we need to apply imbalance handling techniques
 
 # SMOTE balances class distribution by randomly increasing minority class examples by replicating them
 
@@ -69,8 +70,10 @@ predictions_after_near_miss = lr2.predict(X_test)
 print(classification_report(y_test, predictions_after_near_miss))
 
 
-# The BalancedBaggingClassifier is used with imbalanced datasets, as it balances training
-# by incorporating a parameter "sampling strategy" which determines the type of resampling
+# the BalancedBaggingClassifier balances training by incorporating a parameter "sampling strategy"
+# which determines the type of resampling
+
+# create an imbalanced dataset
 
 X, y = make_classification(n_classes=2, class_sep=2, weights=[0.1, 0.9],
                            n_informative=3, n_redundant=1, flip_y=0,
@@ -97,3 +100,35 @@ accuracy = accuracy_score(y_test, y_predicted)
 
 print("Accuracy:", accuracy)
 print("Classification Report:\n", classification_report(y_test, y_predicted))
+
+
+# Changing the threshold to a calcuated value (default is 0.5) allows to better predict the correct class membership
+
+# create an imbalanced dataset
+
+X, y = make_classification(n_classes=2, class_sep=2, weights=[0.1, 0.9],
+                           n_informative=3, n_redundant=1, flip_y=0,
+                           n_features=20, n_clusters_per_class=1,
+                           n_samples=1000, random_state=42)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)
+
+
+model = RandomForestClassifier(random_state=42)
+model.fit(X_train, y_train)
+
+# predict probabilities on the test set
+y_proba = model.predict_proba(X_test)[:, 1]
+
+threshold = 0.5
+
+# adjust threshold based on your criteria (e.g., maximizing F1-score)
+while threshold >= 0:
+    y_predicted = (y_proba >= threshold).astype(int)
+    f1 = f1_score(y_test, y_predicted)
+
+    print(f"Threshold: {threshold:.2f}, F1 Score: {f1:.4f}")
+
+    # Move the threshold (you can customize the step size)
+    threshold -= 0.02
