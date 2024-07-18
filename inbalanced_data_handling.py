@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from imblearn.under_sampling import NearMiss
 from imblearn.over_sampling import SMOTE
 from imblearn.ensemble import BalancedBaggingClassifier
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, IsolationForest
 from sklearn.datasets import make_classification, load_iris
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
@@ -142,17 +142,20 @@ while threshold >= 0:
 # assume majority class data as normal and minority class data as outlier
 # train the model only on the majority class data allows the model to predict if the record is normal or outlier
 
+# Local Outlier Factor (LOF)
+
+
 df = load_iris(as_frame=True).frame
 
 X = df[['sepal length (cm)', 'sepal width (cm)']]
 
 # define the model and set the number of neighbors
-lof = LocalOutlierFactor(n_neighbors=5)
+model = LocalOutlierFactor(n_neighbors=5)
 
-lof.fit(X)
+model.fit(X)
 
 # calculate the outlier scores for each point
-scores = lof.negative_outlier_factor_
+scores = model.negative_outlier_factor_
 
 # identify the points with the highest outlier scores
 outliers = np.argwhere(scores > np.percentile(scores, 95))
@@ -172,6 +175,37 @@ plt.show()
 
 plt.savefig(sys.stdout.buffer)
 sys.stdout.flush()
+
+
+# Isolation Forest
+
+df = load_iris(as_frame=True).frame
+X = df[['sepal length (cm)', 'sepal width (cm)']]
+
+# define the model and set the contamination level
+model = IsolationForest(contamination=0.05)
+
+model.fit(X)
+
+# calculate the outlier scores for each point
+scores = model.decision_function(X)
+
+# identify the points with the highest outlier scores
+outliers = np.argwhere(scores < np.percentile(scores, 5))
+
+
+colors = ['green', 'red']
+
+for i in range(len(X)):
+    if i not in outliers:
+        plt.scatter(X.iloc[i, 0], X.iloc[i, 1], color=colors[0])  # Not anomly
+    else:
+        plt.scatter(X.iloc[i, 0], X.iloc[i, 1], color=colors[1])  # anomly
+plt.xlabel('sepal length (cm)', fontsize=13)
+plt.ylabel('sepal width (cm)', fontsize=13)
+plt.title('Anomly by Isolation Forest', fontsize=16)
+plt.show()
+
 
 # using Tree base models gives better results in case of inbalanced datasets than non tree-based models
 #     -Decision Trees
