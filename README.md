@@ -1,30 +1,21 @@
 # Data Science playground
 
-This is a project created to learn the basics of DataScience.
+This is a project created to learn the basics of DataScience, and to have examples of solutions to different problems.
 
 ## Getting Started
 
 These instructions will help you set up and run the project on your local machine.
 
-### Installing
-
-Clone the repository:
+### Clone the repository
 
    ````bash
   git clone https://github.com/Kinciorska/datascience_playground.git
    ````
 
-### Build the Docker Image:
+### Build and run the Docker Container:
 
    ````bash
-   docker-compose build
-   ````
-
-### Build the Docker Container:
-Run the Docker container in the background using
-
-   ````bash
-   docker-compose up -d
+   docker compose up -d --build 
    ````
 
 ## Datasets
