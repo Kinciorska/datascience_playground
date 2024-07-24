@@ -7,14 +7,15 @@ import matplotlib.pyplot as plt
 from imblearn.under_sampling import NearMiss
 from imblearn.over_sampling import SMOTE
 from imblearn.ensemble import BalancedBaggingClassifier
-from sklearn.ensemble import RandomForestClassifier, IsolationForest
+from sklearn.covariance import EllipticEnvelope
 from sklearn.datasets import make_classification, load_iris
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier, IsolationForest
 from sklearn.metrics import (accuracy_score, confusion_matrix, classification_report,  precision_score, recall_score,
                              f1_score, roc_auc_score)
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import LocalOutlierFactor
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
 
 
 df = pd.read_csv('/Users/kinga/Documents/DataScience/inbalanced_data_handling/creditcard.csv')
@@ -205,10 +206,41 @@ plt.xlabel('sepal length (cm)', fontsize=13)
 plt.ylabel('sepal width (cm)', fontsize=13)
 plt.title('Anomly by Isolation Forest', fontsize=16)
 plt.show()
+plt.savefig(sys.stdout.buffer)
+sys.stdout.flush()
+
+# Elliptic Envelope
+
+df = load_iris(as_frame=True).frame
+X = df[['sepal length (cm)', 'sepal width (cm)']]
+
+# define the model and set the contamination level
+model = EllipticEnvelope(contamination=0.05)
+
+model.fit(X)
+
+# calculate the outlier scores for each point
+scores = model.decision_function(X)
+
+# Identify the points with the highest outlier scores
+outliers = np.argwhere(scores < np.percentile(scores, 5))
+
+colors = ['green', 'red']
+
+for i in range(len(X)):
+    if i not in outliers:
+        plt.scatter(X.iloc[i, 0], X.iloc[i, 1], color=colors[0])  # Not anomly
+    else:
+        plt.scatter(X.iloc[i, 0], X.iloc[i, 1], color=colors[1])  # anomly
+plt.xlabel('sepal length (cm)', fontsize=13)
+plt.ylabel('sepal width (cm)', fontsize=13)
+plt.title('Anomly by Elliptic Envelope', fontsize=16)
+plt.show()
+plt.savefig(sys.stdout.buffer)
+sys.stdout.flush()
 
 
 # using Tree base models gives better results in case of inbalanced datasets than non tree-based models
 #     -Decision Trees
 #     -Random Forests
 #     -Gradien Boosted Trees
-
