@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from imblearn.under_sampling import NearMiss
 from imblearn.over_sampling import SMOTE
 from imblearn.ensemble import BalancedBaggingClassifier
+from sklearn import svm
 from sklearn.covariance import EllipticEnvelope
 from sklearn.datasets import make_classification, load_iris
 from sklearn.ensemble import RandomForestClassifier, IsolationForest
@@ -169,8 +170,8 @@ for i in range(len(X)):
         plt.scatter(X.iloc[i,0], X.iloc[i,1], color=colors[0])  # Not anomly
     else:
         plt.scatter(X.iloc[i,0], X.iloc[i,1], color=colors[1])  # anomly
-plt.xlabel('sepal length (cm)',fontsize=13)
-plt.ylabel('sepal width (cm)',fontsize=13)
+plt.xlabel('sepal length (cm)', fontsize=13)
+plt.ylabel('sepal width (cm)', fontsize=13)
 plt.title('Anomly by Local Outlier Factor', fontsize=16)
 plt.show()
 
@@ -209,6 +210,7 @@ plt.show()
 plt.savefig(sys.stdout.buffer)
 sys.stdout.flush()
 
+
 # Elliptic Envelope
 
 df = load_iris(as_frame=True).frame
@@ -222,7 +224,7 @@ model.fit(X)
 # calculate the outlier scores for each point
 scores = model.decision_function(X)
 
-# Identify the points with the highest outlier scores
+# identify the points with the highest outlier scores
 outliers = np.argwhere(scores < np.percentile(scores, 5))
 
 colors = ['green', 'red']
@@ -239,6 +241,36 @@ plt.show()
 plt.savefig(sys.stdout.buffer)
 sys.stdout.flush()
 
+
+#  One-class SVM
+
+f = load_iris(as_frame=True).frame
+X = df[['sepal length (cm)', 'sepal width (cm)']]
+
+# define the model
+model = svm.OneClassSVM(nu=0.05)
+
+model.fit(X)
+
+# calculate the outlier scores for each point
+scores = model.decision_function(X)
+
+# identify the points with the highest outlier scores
+outliers = np.argwhere(scores < np.percentile(scores, 5))
+
+colors = ['green', 'red']
+
+for i in range(len(X)):
+    if i not in outliers:
+        plt.scatter(X.iloc[i, 0], X.iloc[i, 1], color=colors[0])  # Not anomly
+    else:
+        plt.scatter(X.iloc[i, 0], X.iloc[i, 1], color=colors[1])  # anomly
+plt.xlabel('sepal length (cm)', fontsize=13)
+plt.ylabel('sepal width (cm)', fontsize=13)
+plt.title('Anomly by One-class Support Vector Machines', fontsize=16)
+plt.show()
+plt.savefig(sys.stdout.buffer)
+sys.stdout.flush()
 
 # using Tree base models gives better results in case of inbalanced datasets than non tree-based models
 #     -Decision Trees
