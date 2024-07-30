@@ -244,7 +244,7 @@ sys.stdout.flush()
 
 #  One-class SVM
 
-f = load_iris(as_frame=True).frame
+df = load_iris(as_frame=True).frame
 X = df[['sepal length (cm)', 'sepal width (cm)']]
 
 # define the model
