@@ -41,3 +41,25 @@ print(f"Predicted values: {y_predicted}")
 print(f"Confusion Matrix: {confusion}")
 print(f"Accuracy: {accuracy}")
 print(f"Report: {report}")
+
+
+# train using Entropy
+
+# define the model
+model = DecisionTreeClassifier(criterion="entropy", random_state=100, max_depth=3, min_samples_leaf=5)
+
+model.fit(X_train, y_train)
+
+y_predicted = model.predict(X_test)
+
+confusion = confusion_matrix(y_test, y_predicted)
+
+accuracy = accuracy_score(y_test, y_predicted)
+
+report = classification_report(y_test, y_predicted)
+
+print("Entropy")
+print(f"Predicted values: {y_predicted}")
+print(f"Confusion Matrix: {confusion}")
+print(f"Accuracy: {accuracy}")
+print(f"Report: {report}")
