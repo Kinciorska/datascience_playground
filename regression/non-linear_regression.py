@@ -6,7 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge, LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from util import sigmoid
@@ -110,3 +110,23 @@ r2 = r2_score(y_hat_test, test_y)
 print("Mean Absolute Error: %.2f" % mean_absolute_err)
 print("Mean Squared Error: %.2f" % mean_square_err)
 print("R2-score: %.2f" % r2)
+
+
+# Polynomial regression
+# the non-linear relationships is modeled as an nth degree polynomial
+
+X = np.arange(6).reshape(3, 2)
+
+model = PolynomialFeatures(degree=2)
+model.fit_transform(X)
+
+
+# Ridge regression
+# it solves the issue of very large coefficient numbers in linear regression using a regularization parameter
+
+n_samples, n_features = 10, 5
+rng = np.random.RandomState(0)
+y = rng.randn(n_samples)
+X = rng.randn(n_samples, n_features)
+model = Ridge(alpha=1.0)
+model.fit(X, y)
