@@ -5,6 +5,7 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+from sklearn import linear_model
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import Ridge, LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -130,3 +131,15 @@ y = rng.randn(n_samples)
 X = rng.randn(n_samples, n_features)
 model = Ridge(alpha=1.0)
 model.fit(X, y)
+
+
+# LASSO (Least Absolute Shrinkage And Selection Operator) Regression
+# it is similar to Ridge regression as it adds a regularization term to linear regression equation
+# additionally it can make a regularization term zero, effectively performing feature selection
+
+model = linear_model.Lasso(alpha=0.1)
+model.fit([[0, 0], [1, 1], [2, 2]], [0, 1, 2])
+
+print(model.coef_)
+
+print(model.intercept_)
