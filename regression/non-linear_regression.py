@@ -6,8 +6,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from sklearn import linear_model
+from sklearn.datasets import make_regression
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import Ridge, LinearRegression
+from sklearn.linear_model import Ridge, ElasticNet, LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from util import sigmoid
@@ -135,7 +136,7 @@ model.fit(X, y)
 
 # LASSO (Least Absolute Shrinkage And Selection Operator) Regression
 # it is similar to Ridge regression as it adds a regularization term to linear regression equation
-# additionally it can make a regularization term zero, effectively performing feature selection
+# it can make a regularization term zero, effectively performing feature selection
 
 model = linear_model.Lasso(alpha=0.1)
 model.fit([[0, 0], [1, 1], [2, 2]], [0, 1, 2])
@@ -143,3 +144,18 @@ model.fit([[0, 0], [1, 1], [2, 2]], [0, 1, 2])
 print(model.coef_)
 
 print(model.intercept_)
+
+
+# Elastic Net regression
+# it combines the two methods above as it adds two regularization terms,
+# one which shrinks coefficients, and one which eliminates them
+
+X, y = make_regression(n_features=2, random_state=0)
+model = ElasticNet(random_state=0)
+model.fit(X, y)
+
+print(f"Model coefficients: {model.coef_}")
+
+print(f"Model intercept: {model.intercept_}")
+
+print(f"Prediction: {model.predict([[0, 0]])}")
