@@ -27,6 +27,7 @@ These instructions will help you set up and run the project on your local machin
 - [Feature scaling](https://drive.google.com/file/d/1J7dPhnj2yBuzPwYraFU6cpCsa8Va3fiM/view)
 - [Label encoding](https://www.kaggle.com/code/jchen2186/machine-learning-with-iris-dataset/notebook)
 - [Inbalanced data handling](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+- [SVR](https://github.com/ViswaKiranAndraju/Regression/blob/main/Data%5B1%5D.csv)
 
 ## License
 This app is open-source and distributed under the MIT License.
