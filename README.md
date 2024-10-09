@@ -30,7 +30,7 @@ These instructions will help you set up and run the project on your local machin
 - [SVR](https://github.com/ViswaKiranAndraju/Regression/blob/main/Data%5B1%5D.csv)
 
 ## License
-This app is open-source and distributed under the MIT License.
+This app is open-source and distributed under the GNU General Public License v3.0.
 
 ## Acknowledgments
 
